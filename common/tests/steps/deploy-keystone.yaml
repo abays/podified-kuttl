@@ -1,0 +1,5 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+  - script: |
+      sed 's/secret: keystone-secret/secret: osp-secret/' /tmp/crs/keystone/keystone_v1beta1_keystoneapi.yaml | oc apply -n openstack -f -

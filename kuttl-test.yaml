@@ -1,0 +1,35 @@
+#
+# EXECUTION (from repo root):
+#
+#   ./run.sh
+#
+# Notes: 
+# - To run a single test use:
+#     TEST_TARGET=<test name> ./run.sh
+# - To skip initialization (see init.sh to understand what is skipped):
+#     SKIP_INIT=true ./run.sh
+#
+# ASSUMPTIONS:
+#
+# 1. Latest version of kuttl is installed at /usr/local/bin/kubectl-kuttl
+#    - wget https://github.com/kudobuilder/kuttl/releases/download/v0.11.1/kubectl-kuttl_0.11.1_linux_x86_64
+#    - mv kubectl-kuttl_0.11.1_linux_x86_64 /usr/local/bin/kubectl-kuttl
+#    - chmod 755 /usr/local/bin/kubectl-kuttl
+# 2. An OCP 4.10+ CRC cluster with Podified Operators has been deployed
+# 3. CLI user has access to $KUBECONFIG
+#
+
+apiVersion: kuttl.dev/v1beta1
+kind: TestSuite
+testDirs:                      # The actual kuttl tests
+  - ./tests
+crdDir: /tmp/crds              # CRDs needed for our operator
+manifestDirs:                  # YAMLs to apply before each test
+  - common/manifests/secret.yaml
+reportFormat: JSON
+reportName: kuttl-test
+namespace: openstack
+timeout: 180
+parallel: 1
+suppress:
+  - events                     # Remove spammy event logs

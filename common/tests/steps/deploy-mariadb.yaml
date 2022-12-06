@@ -1,0 +1,5 @@
+apiVersion: kuttl.dev/v1beta1
+kind: TestStep
+commands:
+  - script: |
+      sed 's/secret: mariadb-secret/secret: osp-secret/' /tmp/crs/mariadb/mariadb_v1beta1_mariadb.yaml | oc apply -n openstack -f -
